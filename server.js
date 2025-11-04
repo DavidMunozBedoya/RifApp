@@ -16,8 +16,8 @@ app.use(express.static(".")); // Para servir archivos estáticos de la raíz (in
 
 // Configuración de MongoDB
 const MONGO_URI = process.env.MONGO_URI;
-const DB_NAME = process.env.DB_NAME || "MICONEXION";
-const COLLECTION_NAME = process.env.COLLECTION_NAME || "Rifa";
+const DB_NAME = process.env.DB_NAME;
+const COLLECTION_NAME = process.env.COLLECTION_NAME;
 
 let db;
 let apuestasCollection;
