@@ -2,7 +2,7 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 /* require("dotenv").config(); */
 
 const app = express();
@@ -233,6 +233,72 @@ app.get("/api/apuestas/usuario/:usuario", async (req, res) => {
 app.get("/api/numeros-en-uso", async (_, res) => {
   const usados = await services.obtenerNumerosEnUso();
   res.json({ success: true, cantidad: usados.length, numeros: usados.sort((a, b) => a - b) });
+});
+
+// --- Actualizar una apuesta (editar usuario/telefono/estado; no editar números) ---
+app.put("/api/apuestas/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!ObjectId.isValid(id))
+      return res.status(400).json({ success: false, mensaje: "ID inválido" });
+
+    const { usuario, telefono, estado_cuenta } = req.body || {};
+
+    if (!usuario && !telefono && !estado_cuenta)
+      return res.status(400).json({ success: false, mensaje: "Nada para actualizar" });
+
+    const update = { $set: {} };
+    if (typeof usuario === "string" && usuario.trim()) update.$set.usuario = usuario.trim();
+    if (typeof telefono !== "undefined") {
+      const telStr = String(telefono).trim();
+      if (!/^\d+$/.test(telStr))
+        return res.status(400).json({ success: false, mensaje: "Teléfono inválido" });
+      update.$set.telefono = telStr; // conservar como string
+    }
+    if (typeof estado_cuenta === "string") {
+      const val = estado_cuenta.toLowerCase();
+      update.$set.estado_cuenta = val === "pago" || val === "pagó" ? "Pago" : "Debe";
+    }
+
+    if (Object.keys(update.$set).length === 0)
+      return res.status(400).json({ success: false, mensaje: "Datos inválidos" });
+
+    const result = await apuestasCollection.updateOne(
+      { _id: new ObjectId(id), activa: true },
+      update
+    );
+
+    if (result.matchedCount === 0)
+      return res.status(404).json({ success: false, mensaje: "Apuesta no encontrada" });
+
+    const actualizada = await apuestasCollection.findOne({ _id: new ObjectId(id) });
+    res.json({ success: true, mensaje: "Apuesta actualizada", apuesta: actualizada });
+  } catch (err) {
+    console.error("Error en PUT /api/apuestas/:id", err);
+    res.status(500).json({ success: false, mensaje: "Error al actualizar la apuesta" });
+  }
+});
+
+// --- Eliminar (soft delete) una apuesta ---
+app.delete("/api/apuestas/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!ObjectId.isValid(id))
+      return res.status(400).json({ success: false, mensaje: "ID inválido" });
+
+    const result = await apuestasCollection.updateOne(
+      { _id: new ObjectId(id), activa: true },
+      { $set: { activa: false, fechaEliminacion: new Date() } }
+    );
+
+    if (result.matchedCount === 0)
+      return res.status(404).json({ success: false, mensaje: "Apuesta no encontrada" });
+
+    res.json({ success: true, mensaje: "Apuesta eliminada" });
+  } catch (err) {
+    console.error("Error en DELETE /api/apuestas/:id", err);
+    res.status(500).json({ success: false, mensaje: "Error al eliminar la apuesta" });
+  }
 });
 
 // Ruta para servir el index.html desde la raíz
