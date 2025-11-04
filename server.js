@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -14,7 +15,7 @@ app.use(express.static("public")); // Para servir archivos estáticos de public 
 app.use(express.static(".")); // Para servir archivos estáticos de la raíz (index.html, tabla.js)
 
 // Configuración de MongoDB
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017";
+const MONGO_URI = process.env.MONGO_URI;
 const DB_NAME = process.env.DB_NAME || "MICONEXION";
 const COLLECTION_NAME = process.env.COLLECTION_NAME || "Rifa";
 
