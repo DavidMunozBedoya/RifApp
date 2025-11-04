@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const { MongoClient } = require("mongodb");
-require("dotenv").config();
+/* require("dotenv").config(); */
 
 const app = express();
 const PORT = process.env.PORT || 3000;
