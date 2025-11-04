@@ -34,12 +34,12 @@
     </style>
   </head>
   <body
-    class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 p-6"
+    class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 p-4 sm:p-6"
   >
     <div class="max-w-6xl mx-auto">
       <!-- NAVBAR -->
       <!-- Navbar -->
-      <nav class="flex justify-center gap-6 mb-8">
+      <nav class="flex flex-col sm:flex-row justify-center gap-3 sm:gap-6 mb-6 sm:mb-8">
         <button
           id="btnRegistroNav"
           class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition shadow-md hover:shadow-lg"
@@ -159,17 +159,17 @@
             <h2 class="text-xl font-semibold text-gray-800 mb-4">
               Número Principal
             </h2>
-            <div class="flex gap-3">
+            <div class="flex flex-col sm:flex-row gap-3">
               <input
                 type="text"
                 id="numeroPrincipal"
                 maxlength="3"
-                class="flex-1 px-6 py-4 bg-white border border-gray-300 rounded-lg text-gray-900 text-2xl font-bold text-center placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                class="w-full sm:flex-1 px-6 py-4 bg-white border border-gray-300 rounded-lg text-gray-900 text-2xl font-bold text-center placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                 placeholder="000"
               />
               <button
                 id="btnVerificar"
-                class="px-6 py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition flex items-center gap-2 shadow-md hover:shadow-lg"
+                class="w-full sm:w-auto px-6 py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
               >
                 <svg
                   class="w-5 h-5"
@@ -220,7 +220,7 @@
             </button>
             <div
               id="numerosGenerados"
-              class="hidden mt-6 grid grid-cols-2 gap-4"
+              class="hidden mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4"
             ></div>
           </div>
 
@@ -232,7 +232,7 @@
             <h3 class="text-lg font-semibold text-gray-800 mb-4">
               Resumen de la Apuesta
             </h3>
-            <div class="grid grid-cols-3 gap-4 mb-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
               <div class="text-center">
                 <p class="text-gray-600 text-xs mb-1">Principal</p>
                 <p id="resumenPrincipal" class="text-2xl font-bold text-gray-900">
@@ -264,17 +264,17 @@
           ></div>
 
           <!-- Botones -->
-          <div class="flex gap-4">
+          <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <button
               id="btnRegistrar"
               disabled
-              class="flex-1 px-6 py-4 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition shadow-md hover:shadow-lg"
+              class="w-full sm:flex-1 px-6 py-4 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition shadow-md hover:shadow-lg"
             >
               Registrar Apuesta
             </button>
             <button
               id="btnLimpiar"
-              class="px-6 py-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg transition shadow-md hover:shadow-lg"
+              class="w-full sm:w-auto px-6 py-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg transition shadow-md hover:shadow-lg"
             >
               Limpiar
             </button>
@@ -290,28 +290,28 @@
           <h2 class="text-2xl font-bold mb-6 text-gray-800">Listado de Apuestas</h2>
 
           <!-- Buscador -->
-          <div class="mb-4 flex justify-between items-center">
+          <div class="mb-4 flex flex-col md:flex-row gap-3 md:gap-0 md:justify-between md:items-center">
             <input
               type="text"
               id="buscador"
-              class="w-1/2 px-4 py-2 rounded-lg bg-white border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900"
+              class="w-full md:w-1/2 px-4 py-2 rounded-lg bg-white border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900"
               placeholder="Buscar por nombre, teléfono, número o estado..."
             />
           </div>
 
           <!-- Tabla -->
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+          <div class="overflow-x-auto -mx-4 sm:mx-0">
+            <table class="min-w-full w-full text-left border-collapse text-xs sm:text-sm">
               <thead>
                 <tr class="bg-blue-600 text-white">
-                  <th class="py-3 px-4 border-b border-blue-700">#</th>
-                  <th class="py-3 px-4 border-b border-blue-700">Usuario</th>
-                  <th class="py-3 px-4 border-b border-blue-700">Teléfono</th>
-                  <th class="py-3 px-4 border-b border-blue-700">Principal</th>
-                  <th class="py-3 px-4 border-b border-blue-700">Segundo</th>
-                  <th class="py-3 px-4 border-b border-blue-700">Tercero</th>
-                  <th class="py-3 px-4 border-b border-blue-700">Estado</th>
-                  <th class="py-3 px-4 border-b border-blue-700">Acciones</th>
+                  <th class="py-3 px-2 sm:px-4 border-b border-blue-700 whitespace-nowrap">#</th>
+                  <th class="py-3 px-2 sm:px-4 border-b border-blue-700 whitespace-nowrap">Usuario</th>
+                  <th class="py-3 px-2 sm:px-4 border-b border-blue-700 whitespace-nowrap">Teléfono</th>
+                  <th class="py-3 px-2 sm:px-4 border-b border-blue-700 whitespace-nowrap">Principal</th>
+                  <th class="py-3 px-2 sm:px-4 border-b border-blue-700 whitespace-nowrap">Segundo</th>
+                  <th class="py-3 px-2 sm:px-4 border-b border-blue-700 whitespace-nowrap">Tercero</th>
+                  <th class="py-3 px-2 sm:px-4 border-b border-blue-700 whitespace-nowrap">Estado</th>
+                  <th class="py-3 px-2 sm:px-4 border-b border-blue-700 whitespace-nowrap">Acciones</th>
                 </tr>
               </thead>
               <tbody id="tablaCuerpo"></tbody>
