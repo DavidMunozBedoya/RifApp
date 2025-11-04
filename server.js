@@ -33,7 +33,19 @@ async function conectarDB() {
     apuestasCollection = db.collection(COLLECTION_NAME);
 
     // Índices
-    await apuestasCollection.createIndex({ "numeros.primer": 1 }, { unique: true, sparse: true });
+    // Asegurar que el índice único solo aplique a documentos activos (activa: true)
+    try {
+      const idxs = await apuestasCollection.listIndexes().toArray();
+      const legacyUniqueIdx = idxs.find(i => i.key && i.key["numeros.primer"] === 1 && i.unique && !i.partialFilterExpression);
+      if (legacyUniqueIdx) {
+        await apuestasCollection.dropIndex(legacyUniqueIdx.name);
+      }
+    } catch (_) {}
+
+    await apuestasCollection.createIndex(
+      { "numeros.primer": 1 },
+      { unique: true, name: "uniq_primer_activa", partialFilterExpression: { activa: true } }
+    );
     await apuestasCollection.createIndex({ "numeros.segunda": 1 });
     await apuestasCollection.createIndex({ "numeros.tercera": 1 });
 
@@ -66,6 +78,7 @@ const services = {
   verificarDisponibilidad: async (numero) => {
     const numeroFormateado = utils.formatearNumero(numero);
     const existente = await apuestasCollection.findOne({
+      activa: true,
       $or: [
         { "numeros.primer": numeroFormateado },
         { "numeros.segunda": numeroFormateado },
@@ -76,7 +89,7 @@ const services = {
   },
 
   obtenerNumerosEnUso: async () => {
-    const apuestas = await apuestasCollection.find({}).toArray();
+    const apuestas = await apuestasCollection.find({ activa: true }).toArray();
     const usados = new Set();
     apuestas.forEach((a) => {
       if (a.numeros) {
